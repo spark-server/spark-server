@@ -284,37 +284,30 @@
   "ok": false,
   "message": "SessionId :sessionId was not found for context :contextName!"
 }
-</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts__contextName__sessions__sessionId__statements"><span class="parent">/contexts/{contextName}/sessions/{sessionId}</span>/statements</a> <span class="methods"><a href="#contexts__contextName__sessions__sessionId__statements_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_contexts__contextName__sessions__sessionId__statements" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts__contextName__sessions__sessionId__statements_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Executes (a) statement(s) on an existing session within an existing context<br><br><b>Possible properties of the statement object:</b></p><ul><li><i>code (array&lt;string&gt;)</i>: The source code (JS) that should be executed within the opened Spark context. One line should be string one array item</li><li><i>return (string)</i>: The variable that should be returned from the context, or the code that should be executed to generate the result</li><li><i>parse (boolean)</i>: Whether the return object/code result should be parsed as JSON or not</li></ul></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions__sessionId__statements_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/contexts/{contextName}/sessions/{sessionId}</span>/statements</h4></div><div class="modal-body"><div class="alert alert-info"><p>Executes (a) statement(s) on an existing session within an existing context<br><br><b>Possible properties of the statement object:</b></p><ul><li><i>code (array&lt;string&gt;)</i>: The source code (JS) that should be executed within the opened Spark context. One line should be string one array item</li><li><i>return (string)</i>: The variable that should be returned from the context, or the code that should be executed to generate the result</li><li><i>parse (boolean)</i>: Whether the return object/code result should be parsed as JSON or not</li></ul></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions__sessionId__statements_post_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions__sessionId__statements_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions__sessionId__statements_post_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li><li><strong>sessionId</strong>: <em>required (string)</em></li></ul><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts__contextName__sessions__sessionId__statements"><span class="parent">/contexts/{contextName}/sessions/{sessionId}</span>/statements</a> <span class="methods"><a href="#contexts__contextName__sessions__sessionId__statements_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_contexts__contextName__sessions__sessionId__statements" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts__contextName__sessions__sessionId__statements_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Executes (a) statement(s) on an existing session within an existing context<br><br><b>Possible properties of the statement object:</b></p><ul><li><i>code (array&lt;string&gt;)</i>: The source code (JS) that should be executed within the opened Spark context. One line should be string one array item</li><li><i>return (string)</i>: The variable that should be returned from the context, or the code that should be executed to generate the result</li></ul></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions__sessionId__statements_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/contexts/{contextName}/sessions/{sessionId}</span>/statements</h4></div><div class="modal-body"><div class="alert alert-info"><p>Executes (a) statement(s) on an existing session within an existing context<br><br><b>Possible properties of the statement object:</b></p><ul><li><i>code (array&lt;string&gt;)</i>: The source code (JS) that should be executed within the opened Spark context. One line should be string one array item</li><li><i>return (string)</i>: The variable that should be returned from the context, or the code that should be executed to generate the result</li></ul></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions__sessionId__statements_post_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions__sessionId__statements_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions__sessionId__statements_post_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li><li><strong>sessionId</strong>: <em>required (string)</em></li></ul><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
   "code": [
     "var df = sqlContext.read().json(getFileById(&#39;people.json&#39;))",
-    "var df_schema = df.schema().prettyJson()",
+    "var df_schema = df.schema()",
   ],
-  "return": "df_schema",
-  "parse": true
+  "return": "df_schema"
 }
 </code></pre></div><div class="tab-pane" id="contexts__contextName__sessions__sessionId__statements_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>The result of the executed statement(s). What actually is returned is defined in the <code>return</code> property of the request&#39;s body.</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
   "context": "my",
   "sessionId": "439430008af9aec5ad7cb2bb140afd571bbeeffd",
-  "result": {
-    "type": "struct",
-    "fields": [
-      {
-        "name": "age",
-        "type": "long",
-        "nullable": true,
-        "metadata": {}
-      },
-      {
-        "name": "name",
-        "type": "string",
-        "nullable": true,
-        "metadata": {}
-      }
-    ]
-  },
-  "metadata": {
-    "runtime": 2449
-  }
+  "result": [
+    {
+      "name": "age",
+      "type": "long",
+      "nullable": true,
+      "metadata": {}
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "nullable": true,
+      "metadata": {}
+    }
+  ]
 }
 </code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Will be returned when the :contextName or :sessionId wasn&#39;t found</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
   "ok": false,

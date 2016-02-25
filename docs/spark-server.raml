@@ -255,7 +255,6 @@ version: v1
               <ul>
                 <li><i>code (array&lt;string&gt;)</i>: The source code (JS) that should be executed within the opened Spark context. One line should be string one array item</li>
                 <li><i>return (string)</i>: The variable that should be returned from the context, or the code that should be executed to generate the result</li>
-                <li><i>parse (boolean)</i>: Whether the return object/code result should be parsed as JSON or not</li>
               </ul>
             body:
               application/json:
@@ -263,10 +262,9 @@ version: v1
                   {
                     "code": [
                       "var df = sqlContext.read().json(getFileById('people.json'))",
-                      "var df_schema = df.schema().prettyJson()",
+                      "var df_schema = df.schema()",
                     ],
-                    "return": "df_schema",
-                    "parse": true
+                    "return": "df_schema"
                   }
             responses:
               200:
@@ -277,26 +275,20 @@ version: v1
                       {
                         "context": "my",
                         "sessionId": "439430008af9aec5ad7cb2bb140afd571bbeeffd",
-                        "result": {
-                          "type": "struct",
-                          "fields": [
-                            {
-                              "name": "age",
-                              "type": "long",
-                              "nullable": true,
-                              "metadata": {}
-                            },
-                            {
-                              "name": "name",
-                              "type": "string",
-                              "nullable": true,
-                              "metadata": {}
-                            }
-                          ]
-                        },
-                        "metadata": {
-                          "runtime": 2449
-                        }
+                        "result": [
+                          {
+                            "name": "age",
+                            "type": "long",
+                            "nullable": true,
+                            "metadata": {}
+                          },
+                          {
+                            "name": "name",
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {}
+                          }
+                        ]
                       }
               500:
                 description: Is returned when the execution of the statement(s) triggered a Spark error
