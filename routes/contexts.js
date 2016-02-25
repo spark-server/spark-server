@@ -2,7 +2,6 @@
 var express = require('express');
 var router = express.Router();
 var commonFunctions = require('../lib/commonFunctions');
-//var config = require('./../config/config');
 
 function fillPorts(startPort, endPort) {
     for (var i=startPort; i <= endPort; i++) {
@@ -42,8 +41,6 @@ var availablePorts = [];
 var messageListeners = {};
 
 module.exports = function(config, logger, cluster) {
-
-    //console.log(JSON.stringify(config));
 
     var ipAddress = commonFunctions.getIPAddress(config.spark.bindInterface);
 
