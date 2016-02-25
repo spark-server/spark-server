@@ -11,12 +11,12 @@ or [Apache Toree](http://toree.incubator.apache.org/), but each of them has it's
 This project is to be considered as `alpha` code. Hopefully there will be some contributors which help to implement further feature. Any help is welcome!
 
 **Roadmap:**  
-- [] Optimize result parsing
-- [] Better documentation at [spark-server.github.io/](http://spark-server.github.io/)
-- [] Code cleanup & refactoring
-- [] Improved logging
-- [] Add tests
-- [] Add authentication
+- [ ] Optimize result parsing
+- [ ] Better documentation at [spark-server.github.io/](http://spark-server.github.io/)
+- [ ] Code cleanup & refactoring
+- [ ] Improved logging
+- [ ] Add tests
+- [ ] Add authentication
 
 ## Installation
 
