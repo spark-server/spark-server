@@ -11,7 +11,7 @@ or [Apache Toree](http://toree.incubator.apache.org/), but each of them has it's
 This project is to be considered as `alpha` code. Hopefully there will be some contributors which help to implement further feature. Any help is welcome!
 
 **Roadmap:**  
-- [ ] Optimize result parsing
+- [x] Optimize result parsing
 - [ ] Better documentation at [spark-server.github.io/](http://spark-server.github.io/)
 - [ ] Code cleanup & refactoring
 - [ ] Improved logging
@@ -198,8 +198,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "code": [
       "var people = sqlContext.read().format('com.databricks.spark.csv').option('header', 'true').option('inferSchema', 'true').option('delimiter', ',').load(getFileById('people.csv'))"
     ],
- 	"parse": true,
- 	"return": "people.schema().prettyJson()"
+ 	"return": "people.schema()"
 }' "http://localhost:3000/v1/contexts/mycontext/sessions/a5f2498aef12d8562a84c447105ecb4f0ab27c14/statements"
 ```
 
@@ -209,9 +208,7 @@ This will return the schema information of the newly created `people` DataFrame:
 {
   "context": "mycontext",
   "sessionId": "a5f2498aef12d8562a84c447105ecb4f0ab27c14",
-  "result": {
-    "type": "struct",
-    "fields": [
+  "result": [
       {
         "name": "id",
         "type": "integer",
@@ -259,12 +256,11 @@ This will return the schema information of the newly created `people` DataFrame:
 }
 ```
 
-Now, we want to retrieve the data from the `DataFrame` (we'll use the `toJSON()` method to convert the data to JSON rows before we use `collect()` to actually retrieve it):
+Now, we want to retrieve the data from the `DataFrame`:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
- 	"parse": true,
- 	"return": "people.toJSON().collect()"
+ 	"return": "people"
 }' "http://localhost:3000/v1/contexts/mycontext/sessions/a5f2498aef12d8562a84c447105ecb4f0ab27c14/statements"
 ```
 
@@ -293,7 +289,6 @@ Let's try to count the females within the `people.csv` DataFrame:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
- 	"parse": true,
  	"return": "people.filter('gender = \"Female\"').count()"
 }' "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
 ```
@@ -315,7 +310,6 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "code": [
         "var cars = await sqlContext.read().format('com.databricks.spark.csv').option('header', 'true').option('inferSchema', 'true').option('delimiter', ',').load(getFileById('cars.csv')).toJSON().collectPromised()"
     ],
-    "parse": true,
     "return": "cars"
 }' "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
 ```
@@ -350,16 +344,15 @@ which returns
 }
 ```
 
-Also, we can try to mix JS with Spark code. Let's fetch the url stats of `www.google.com` from Facebook asynchronously and calculate the comment-share-ratio with Spark SQL:
+Also, we can try to mix JS with Spark code. Let's fetch the url stats of `www.google.com` from the Facebook Graph API asynchronously and calculate the comment-to-shares ratio with Spark SQL:
 
 ```bash
 {
     "code": [
         "var googleStats = sqlContext.read().json(await getRemoteJSON('http://graph.facebook.com/?id=http://www.google.com'))",
         "googleStats.registerTempTable('gs')",
-        "var commentShareRatio = sqlContext.sql('select comments/shares*100 from gs').toJSON().collect()"
+        "var commentShareRatio = sqlContext.sql('select comments/shares*100 as commentShareRatio from gs')"
     ],
-    "parse": true,
     "return": "commentShareRatio"
 }
 ```
@@ -368,11 +361,11 @@ returns
 
 ```json
 {
-  "context": "mycontext",
+  "context": "my",
   "sessionId": "0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115",
   "result": [
     {
-      "_c0": 0.007933626986377321
+      "commentShareRatio": 0.007931660522753256
     }
   ]
 }
