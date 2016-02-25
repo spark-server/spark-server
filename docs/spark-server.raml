@@ -1,0 +1,418 @@
+#%RAML 0.8
+title: Spark-Server REST
+baseUri: http://localhost:3000/{version}
+version: v1
+/contexts:
+  description: |
+    The `/contexts` endpoints allow access to Apache Spark's `SparkContext` objects. Each `SparkContext` is launched in a separate JVM, and is configurable via configuration properties, see the [official docs](http://spark.apache.org/docs/latest/configuration.html#spark-properties).
+  get:
+    description: Lists all current available contexts
+    responses:
+      200:
+        description: Will return an array of context objects
+        body:
+          application/json:
+            example: |
+              {
+                "contexts": [
+                  "my"
+                ]
+              }
+  /{contextName}:
+    get:
+      description: Retrieve a specific Spark context
+      responses:
+        200:
+          description: Will return a context object with its specification
+          body:
+            application/json:
+              example: |
+                {
+                  "config": {
+                    "createSQLContext": true,
+                    "localRepository": "http://192.168.0.5:8080/nexus/content/groups/public",
+                    "properties": {
+                      "spark.driver.cores": "1",
+                      "spark.driver.memory": "1g",
+                      "spark.executor.memory": "2g",
+                      "spark.shuffle.sort.bypassMergeThreshold": "8"
+                    },
+                    "packages": [
+                        "com.databricks:spark-csv_2.10:1.3.0"
+                    ]
+                  }
+                }
+    post:
+      description: |
+        Create a new Spark context. If no configuration object is passed in the body, then the context will use the standard values. <br/><br/>
+        <b>Possible properties of the configuration object:</b>
+        <ul>
+          <li><i>createSQLContext (boolean)</i>: Whether a sqlContext shall be created with the sparkContext</li>
+          <li><i>localRepository (string)</i>: The URL of a private/local Maven repository</li>
+          <li><i>masterUrl (string)</i>: The <a href="http://spark.apache.org/docs/latest/submitting-applications.html#master-urls" target="_blank">master URL</a> for the Spark cluster. Default is <i>local[*]</i></li>
+          <li><i>properties (object)</i>: The <a href="http://spark.apache.org/docs/latest/configuration.html#available-properties" target="_blank">Spark runtime configuration properties</a> to be used.</li>
+          <li><i>packages (array)</i>: An array of <i>package</i> names (Maven notation)</li>
+        </ul>
+      body:
+        application/json:
+          example: |
+            {
+              "config": {
+                "createSQLContext": true,
+                "localRepository": "http://192.168.0.5:8080/nexus/content/groups/public",
+                "masterUrl": "mesos://zk://192.168.0.101:2181,192.168.0.102:2181,192.168.0.103:2181/mesos",
+                "properties": {
+                  "spark.driver.cores": "1",
+                  "spark.driver.memory": "1g",
+                  "spark.executor.memory": "2g",
+                  "spark.shuffle.sort.bypassMergeThreshold": "8"
+                },
+                "packages": [
+                    "com.databricks:spark-csv_2.10:1.3.0"
+                ]
+              }
+            }
+      responses:
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "ok": false,
+                  "message": "No context name specified!"
+                }
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "context": "my",
+                  "ok": true,
+                  "message": "Context my already exists!"
+                }
+        201:
+          body:
+            application/json:
+              example: |
+                {
+                  "context": "my",
+                  "configuration": {
+                    "createSQLContext": true,
+                    "localRepository": "http://192.168.0.5:8080/nexus/content/groups/public",
+                    "properties": {
+                      "spark.driver.cores": "1",
+                      "spark.driver.memory": "1g",
+                      "spark.executor.memory": "2g",
+                      "spark.driver.host": "192.168.0.199",
+                      "spark.app.id": "my",
+                      "spark.blockManager.port": "10066",
+                      "spark.broadcast.port": "10001",
+                      "spark.driver.port": "10078",
+                      "spark.executor.port": "10039",
+                      "spark.fileserver.port": "10072",
+                      "spark.ui.port": "10067"
+                    },
+                    "packages": [
+                        "com.databricks:spark-csv_2.10:1.3.0"
+                    ],
+                    "ports": [
+                      10066,
+                      10001,
+                      10078,
+                      10039,
+                      10072,
+                      10067
+                    ],
+                    "applicationName": "my"
+                  },
+                  "sparkWebUi": "http://192.168.0.199:10067",
+                  "sessions": 0
+                }
+    delete:
+      description: Shuts down a specific Spark context
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "context": "my",
+                  "ok": true
+                }
+    /sessions:
+      get:
+        description: Lists all current available sessions for the respective context
+        responses:
+          200:
+            description: An array of session objects for the respective context
+            body:
+              application/json:
+                example: |
+                  {
+                    "context": "my",
+                    "sessions": [
+                      {
+                        "id": "b177f3bd5e5426432e57aecaf7f418a8a0674137",
+                        "startedTimestamp": 1448626887670,
+                        "type": "spark",
+                        "status": "IDLE",
+                        "statements": [
+                          {
+                            "executionTimestamp": 1448626903332,
+                            "statementId": 0,
+                            "statement": "var df = sqlContext.read().json(getFileById('people.json'))"
+                          }
+                        ]
+                      }
+                    ],
+                    "sessionsCount": 1
+                  }
+          404:
+            description:
+            body:
+              application/json:
+                example: |
+                  {
+                    "ok": false,
+                    "message": "Context :contextName was not found!"
+                  }
+      post:
+        description: Create a new session for the respective Spark context
+        responses:
+          201:
+            description: Returns the newly created session object
+            body:
+              application/json:
+                example: |
+                  {
+                    "context": "my",
+                    "session": {
+                      "id": "439430008af9aec5ad7cb2bb140afd571bbeeffd",
+                      "startedTimestamp": 1448630340398,
+                      "type": "spark",
+                      "status": "IDLE",
+                      "statements": []
+                    }
+                  }
+          404:
+            description: Is returned when the :contextName wasn't found
+            body:
+              application/json:
+                example: |
+                  {
+                    "ok": false,
+                    "message": "Context :contextName was not found!"
+                  }
+      /{sessionId}:
+        get:
+          description: Get the details of the specific session for the respective Spark context
+          responses:
+            200:
+              description: A session object
+              body:
+                application/json:
+                  example: |
+                    {
+                       "id": "b177f3bd5e5426432e57aecaf7f418a8a0674137",
+                       "startedTimestamp": 1448626887670,
+                       "type": "spark",
+                       "status": "IDLE",
+                       "currentlyRunning": 0,
+                       "statements": [
+                         {
+                           "executionTimestamp": 1448626903332,
+                           "statementId": 0,
+                           "statement": "var df = sqlContext.read().json(getFileById('people.json'))"
+                         }
+                       ]
+                    }
+        delete:
+          description: Delete a session for the respective Spark context
+          responses:
+            200:
+              description: A short session object
+              body:
+                application/json:
+                  example: |
+                    {
+                      "context": "my",
+                      "sessionId": "b177f3bd5e5426432e57aecaf7f418a8a0674137"
+                    }
+            404:
+              description: Will be returned when the :contextName or :sessionId wasn't found
+              body:
+                application/json:
+                  example: |
+                    {
+                      "ok": false,
+                      "message": "SessionId :sessionId was not found for context :contextName!"
+                    }
+        /statements:
+          post:
+            description: |
+              Executes (a) statement(s) on an existing session within an existing context<br/><br/>
+              <b>Possible properties of the statement object:</b>
+              <ul>
+                <li><i>code (array&lt;string&gt;)</i>: The source code (JS) that should be executed within the opened Spark context. One line should be string one array item</li>
+                <li><i>return (string)</i>: The variable that should be returned from the context, or the code that should be executed to generate the result</li>
+                <li><i>parse (boolean)</i>: Whether the return object/code result should be parsed as JSON or not</li>
+              </ul>
+            body:
+              application/json:
+                example: |
+                  {
+                    "code": [
+                      "var df = sqlContext.read().json(getFileById('people.json'))",
+                      "var df_schema = df.schema().prettyJson()",
+                    ],
+                    "return": "df_schema",
+                    "parse": true
+                  }
+            responses:
+              200:
+                description: The result of the executed statement(s). What actually is returned is defined in the `return` property of the request's body.
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "context": "my",
+                        "sessionId": "439430008af9aec5ad7cb2bb140afd571bbeeffd",
+                        "result": {
+                          "type": "struct",
+                          "fields": [
+                            {
+                              "name": "age",
+                              "type": "long",
+                              "nullable": true,
+                              "metadata": {}
+                            },
+                            {
+                              "name": "name",
+                              "type": "string",
+                              "nullable": true,
+                              "metadata": {}
+                            }
+                          ]
+                        },
+                        "metadata": {
+                          "runtime": 2449
+                        }
+                      }
+              500:
+                description: Is returned when the execution of the statement(s) triggered a Spark error
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "context": "my",
+                        "sessionId": "439430008af9aec5ad7cb2bb140afd571bbeeffd",
+                        "error": "TypeError: df.schema(...).prettyJson(...).test is not a function",
+                        "metadata": {}
+                      }
+              404:
+                description: Will be returned when the :contextName or :sessionId wasn't found
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "ok": false,
+                        "message": "SessionId :sessionId was not found for context :contextName!"
+                      }
+/files:
+  description: The `/files` endpoints allow uploading of local files to the Spark-Server. This can be useful if otherwise only the local filesystem can be used (instead of S3 etc.).
+  post:
+    description: Uploads a file to be used within a Spark computation. The generated `fileId` can then be used together with the context function `getFileById(fileId)` (which returns the temporary local path) to actually use the file in the Spark context.
+    body:
+      multipart/form-data:
+        formParameters:
+          file:
+            description: The file to be uploaded
+            required: true
+            type: file
+    responses:
+      201:
+        description: When the file was successfully uploaded
+        body:
+          application/json:
+            example: |
+              {
+                "files": [
+                  {
+                    "fileId": "0asdf0g789sdf98ydfg99sfg898f7g989sa9"
+                    "filePath": "/app/fileCache/0asdf0g789sdf98ydfg99sfg898f7g989sa9"
+                    "fileSize": 1267
+                    "originalFileName": "people.json",
+                  }
+                ]
+              }
+      500:
+        description:
+        body:
+          application/json:
+            example: |
+              {
+                "message": "An error occured during the upload!"
+              }
+  get:
+    description: Returns an array of uploaded file objects
+    responses:
+      200:
+        description: When the files could successfully be retrieved, an array of file objects is returned. If none found, array will be empty.
+        body:
+          application/json:
+            example: |
+              {
+                "files": [
+                  {
+                    "fileId": "0asdf0g789sdf98ydfg99sfg898f7g989sa9"
+                    "filePath": "/app/fileCache/0asdf0g789sdf98ydfg99sfg898f7g989sa9"
+                    "fileSize": 1267
+                  }
+                ]
+              }
+  /{fileId}:
+    get:
+      description: Returns a specific uploaded file
+      responses:
+        200:
+          description: The specific file as binary stream
+          body:
+            application/octet-stream:
+        404:
+          description: Will be returned when the `fileId` wasn't found
+          body:
+            application/json:
+              example: |
+                {
+                  "ok": false,
+                  "message": "File :fileId was not found!"
+                }
+    delete:
+      description: Deletes a specific uploaded file
+      responses:
+        200:
+          description: Will be sent if file was deleted successfully
+          body:
+            application/json:
+              example: |
+                {
+                  "ok": true
+                }
+        404:
+          description: Will be returned when the `fileId` wasn't found
+          body:
+            application/json:
+              example: |
+                {
+                  "ok": false,
+                  "message": "File :fileId was not found!"
+                }
+        500:
+          description: Will be returned when the `fileId` contained forbidden characters (like `../` or `/`)
+          body:
+            application/json:
+              example: |
+                {
+                  "ok": false,
+                  "message": "Invalid file name!"
+                }

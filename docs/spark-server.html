@@ -1,0 +1,365 @@
+<!DOCTYPE HTML><html><head><title>Spark-Server REST API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/kevinrenskers/raml2html 2.1.2"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          try {
+            if (history && history.replaceState) {
+                history.replaceState({}, '', '#');
+            }
+          } catch(e) {}
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>Spark-Server REST API documentation <small>version v1</small></h1><p>http://localhost:3000/v1</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="contexts" class="panel-title">/contexts</h3></div><div class="panel-body"><div class="top-resource-description"><p>The <code>/contexts</code> endpoints allow access to Apache Spark&#39;s <code>SparkContext</code> objects. Each <code>SparkContext</code> is launched in a separate JVM, and is configurable via configuration properties, see the <a href="http://spark.apache.org/docs/latest/configuration.html#spark-properties">official docs</a>.</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts"><span class="parent"></span>/contexts</a> <span class="methods"><a href="#contexts_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_contexts" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Lists all current available contexts</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/contexts</h4></div><div class="modal-body"><div class="alert alert-info"><p>Lists all current available contexts</p></div><ul class="nav nav-tabs"><li><a href="#contexts_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="contexts_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Will return an array of context objects</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "contexts": [
+    "my"
+  ]
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts__contextName_"><span class="parent">/contexts</span>/{contextName}</a> <span class="methods"><a href="#contexts__contextName__get"><span class="badge badge_get">get</span></a> <a href="#contexts__contextName__post"><span class="badge badge_post">post</span></a> <a href="#contexts__contextName__delete"><span class="badge badge_delete">delete</span></a></span></h4></div><div id="panel_contexts__contextName_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts__contextName__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve a specific Spark context</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#contexts__contextName__post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Create a new Spark context. If no configuration object is passed in the body, then the context will use the standard values.<br><br><b>Possible properties of the configuration object:</b></p><ul><li><i>createSQLContext (boolean)</i>: Whether a sqlContext shall be created with the sparkContext</li><li><i>localRepository (string)</i>: The URL of a private/local Maven repository</li><li><i>masterUrl (string)</i>: The <a href="http://spark.apache.org/docs/latest/submitting-applications.html#master-urls" target="_blank">master URL</a> for the Spark cluster. Default is <i>local[*]</i></li><li><i>properties (object)</i>: The <a href="http://spark.apache.org/docs/latest/configuration.html#available-properties" target="_blank">Spark runtime configuration properties</a> to be used.</li><li><i>packages (array)</i>: An array of <i>package</i> names (Maven notation)</li></ul></div><div class="clearfix"></div></div><div onclick="window.location.href = '#contexts__contextName__delete'" class="list-group-item"><span class="badge badge_delete">delete</span><div class="method_description"><p>Shuts down a specific Spark context</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/contexts</span>/{contextName}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve a specific Spark context</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__get_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__get_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="contexts__contextName__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Will return a context object with its specification</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "config": {
+    "createSQLContext": true,
+    "localRepository": "http://192.168.0.5:8080/nexus/content/groups/public",
+    "properties": {
+      "spark.driver.cores": "1",
+      "spark.driver.memory": "1g",
+      "spark.executor.memory": "2g",
+      "spark.shuffle.sort.bypassMergeThreshold": "8"
+    },
+    "packages": [
+        "com.databricks:spark-csv_2.10:1.3.0"
+    ]
+  }
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/contexts</span>/{contextName}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Create a new Spark context. If no configuration object is passed in the body, then the context will use the standard values.<br><br><b>Possible properties of the configuration object:</b></p><ul><li><i>createSQLContext (boolean)</i>: Whether a sqlContext shall be created with the sparkContext</li><li><i>localRepository (string)</i>: The URL of a private/local Maven repository</li><li><i>masterUrl (string)</i>: The <a href="http://spark.apache.org/docs/latest/submitting-applications.html#master-urls" target="_blank">master URL</a> for the Spark cluster. Default is <i>local[*]</i></li><li><i>properties (object)</i>: The <a href="http://spark.apache.org/docs/latest/configuration.html#available-properties" target="_blank">Spark runtime configuration properties</a> to be used.</li><li><i>packages (array)</i>: An array of <i>package</i> names (Maven notation)</li></ul></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__post_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__post_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li></ul><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "config": {
+    "createSQLContext": true,
+    "localRepository": "http://192.168.0.5:8080/nexus/content/groups/public",
+    "masterUrl": "mesos://zk://192.168.0.101:2181,192.168.0.102:2181,192.168.0.103:2181/mesos",
+    "properties": {
+      "spark.driver.cores": "1",
+      "spark.driver.memory": "1g",
+      "spark.executor.memory": "2g",
+      "spark.shuffle.sort.bypassMergeThreshold": "8"
+    },
+    "packages": [
+        "com.databricks:spark-csv_2.10:1.3.0"
+    ]
+  }
+}
+</code></pre></div><div class="tab-pane" id="contexts__contextName__post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "ok": true,
+  "message": "Context my already exists!"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "configuration": {
+    "createSQLContext": true,
+    "localRepository": "http://192.168.0.5:8080/nexus/content/groups/public",
+    "properties": {
+      "spark.driver.cores": "1",
+      "spark.driver.memory": "1g",
+      "spark.executor.memory": "2g",
+      "spark.driver.host": "192.168.0.199",
+      "spark.app.id": "my",
+      "spark.blockManager.port": "10066",
+      "spark.broadcast.port": "10001",
+      "spark.driver.port": "10078",
+      "spark.executor.port": "10039",
+      "spark.fileserver.port": "10072",
+      "spark.ui.port": "10067"
+    },
+    "packages": [
+        "com.databricks:spark-csv_2.10:1.3.0"
+    ],
+    "ports": [
+      10066,
+      10001,
+      10078,
+      10039,
+      10072,
+      10067
+    ],
+    "applicationName": "my"
+  },
+  "sparkWebUi": "http://192.168.0.199:10067",
+  "sessions": 0
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": false,
+  "message": "No context name specified!"
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete</span> <span class="parent">/contexts</span>/{contextName}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Shuts down a specific Spark context</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__delete_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__delete_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="contexts__contextName__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "ok": true
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts__contextName__sessions"><span class="parent">/contexts/{contextName}</span>/sessions</a> <span class="methods"><a href="#contexts__contextName__sessions_get"><span class="badge badge_get">get</span></a> <a href="#contexts__contextName__sessions_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_contexts__contextName__sessions" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts__contextName__sessions_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Lists all current available sessions for the respective context</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#contexts__contextName__sessions_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Create a new session for the respective Spark context</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/contexts/{contextName}</span>/sessions</h4></div><div class="modal-body"><div class="alert alert-info"><p>Lists all current available sessions for the respective context</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions_get_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions_get_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="contexts__contextName__sessions_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>An array of session objects for the respective context</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "sessions": [
+    {
+      "id": "b177f3bd5e5426432e57aecaf7f418a8a0674137",
+      "startedTimestamp": 1448626887670,
+      "type": "spark",
+      "status": "IDLE",
+      "statements": [
+        {
+          "executionTimestamp": 1448626903332,
+          "statementId": 0,
+          "statement": "var df = sqlContext.read().json(getFileById(&#39;people.json&#39;))"
+        }
+      ]
+    }
+  ],
+  "sessionsCount": 1
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": false,
+  "message": "Context :contextName was not found!"
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/contexts/{contextName}</span>/sessions</h4></div><div class="modal-body"><div class="alert alert-info"><p>Create a new session for the respective Spark context</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions_post_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions_post_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="contexts__contextName__sessions_post_response"><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><p>Returns the newly created session object</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "session": {
+    "id": "439430008af9aec5ad7cb2bb140afd571bbeeffd",
+    "startedTimestamp": 1448630340398,
+    "type": "spark",
+    "status": "IDLE",
+    "statements": []
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Is returned when the :contextName wasn&#39;t found</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": false,
+  "message": "Context :contextName was not found!"
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts__contextName__sessions__sessionId_"><span class="parent">/contexts/{contextName}/sessions</span>/{sessionId}</a> <span class="methods"><a href="#contexts__contextName__sessions__sessionId__get"><span class="badge badge_get">get</span></a> <a href="#contexts__contextName__sessions__sessionId__delete"><span class="badge badge_delete">delete</span></a></span></h4></div><div id="panel_contexts__contextName__sessions__sessionId_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts__contextName__sessions__sessionId__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get the details of the specific session for the respective Spark context</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#contexts__contextName__sessions__sessionId__delete'" class="list-group-item"><span class="badge badge_delete">delete</span><div class="method_description"><p>Delete a session for the respective Spark context</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions__sessionId__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/contexts/{contextName}/sessions</span>/{sessionId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get the details of the specific session for the respective Spark context</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions__sessionId__get_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions__sessionId__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions__sessionId__get_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li><li><strong>sessionId</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="contexts__contextName__sessions__sessionId__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>A session object</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+   "id": "b177f3bd5e5426432e57aecaf7f418a8a0674137",
+   "startedTimestamp": 1448626887670,
+   "type": "spark",
+   "status": "IDLE",
+   "currentlyRunning": 0,
+   "statements": [
+     {
+       "executionTimestamp": 1448626903332,
+       "statementId": 0,
+       "statement": "var df = sqlContext.read().json(getFileById(&#39;people.json&#39;))"
+     }
+   ]
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions__sessionId__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete</span> <span class="parent">/contexts/{contextName}/sessions</span>/{sessionId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete a session for the respective Spark context</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions__sessionId__delete_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions__sessionId__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions__sessionId__delete_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li><li><strong>sessionId</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="contexts__contextName__sessions__sessionId__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>A short session object</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "sessionId": "b177f3bd5e5426432e57aecaf7f418a8a0674137"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Will be returned when the :contextName or :sessionId wasn&#39;t found</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": false,
+  "message": "SessionId :sessionId was not found for context :contextName!"
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts__contextName__sessions__sessionId__statements"><span class="parent">/contexts/{contextName}/sessions/{sessionId}</span>/statements</a> <span class="methods"><a href="#contexts__contextName__sessions__sessionId__statements_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_contexts__contextName__sessions__sessionId__statements" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts__contextName__sessions__sessionId__statements_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Executes (a) statement(s) on an existing session within an existing context<br><br><b>Possible properties of the statement object:</b></p><ul><li><i>code (array&lt;string&gt;)</i>: The source code (JS) that should be executed within the opened Spark context. One line should be string one array item</li><li><i>return (string)</i>: The variable that should be returned from the context, or the code that should be executed to generate the result</li><li><i>parse (boolean)</i>: Whether the return object/code result should be parsed as JSON or not</li></ul></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions__sessionId__statements_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/contexts/{contextName}/sessions/{sessionId}</span>/statements</h4></div><div class="modal-body"><div class="alert alert-info"><p>Executes (a) statement(s) on an existing session within an existing context<br><br><b>Possible properties of the statement object:</b></p><ul><li><i>code (array&lt;string&gt;)</i>: The source code (JS) that should be executed within the opened Spark context. One line should be string one array item</li><li><i>return (string)</i>: The variable that should be returned from the context, or the code that should be executed to generate the result</li><li><i>parse (boolean)</i>: Whether the return object/code result should be parsed as JSON or not</li></ul></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions__sessionId__statements_post_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions__sessionId__statements_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions__sessionId__statements_post_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li><li><strong>sessionId</strong>: <em>required (string)</em></li></ul><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "code": [
+    "var df = sqlContext.read().json(getFileById(&#39;people.json&#39;))",
+    "var df_schema = df.schema().prettyJson()",
+  ],
+  "return": "df_schema",
+  "parse": true
+}
+</code></pre></div><div class="tab-pane" id="contexts__contextName__sessions__sessionId__statements_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>The result of the executed statement(s). What actually is returned is defined in the <code>return</code> property of the request&#39;s body.</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "sessionId": "439430008af9aec5ad7cb2bb140afd571bbeeffd",
+  "result": {
+    "type": "struct",
+    "fields": [
+      {
+        "name": "age",
+        "type": "long",
+        "nullable": true,
+        "metadata": {}
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "nullable": true,
+        "metadata": {}
+      }
+    ]
+  },
+  "metadata": {
+    "runtime": 2449
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Will be returned when the :contextName or :sessionId wasn&#39;t found</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": false,
+  "message": "SessionId :sessionId was not found for context :contextName!"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><p>Is returned when the execution of the statement(s) triggered a Spark error</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "sessionId": "439430008af9aec5ad7cb2bb140afd571bbeeffd",
+  "error": "TypeError: df.schema(...).prettyJson(...).test is not a function",
+  "metadata": {}
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="files" class="panel-title">/files</h3></div><div class="panel-body"><div class="top-resource-description"><p>The <code>/files</code> endpoints allow uploading of local files to the Spark-Server. This can be useful if otherwise only the local filesystem can be used (instead of S3 etc.).</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_files"><span class="parent"></span>/files</a> <span class="methods"><a href="#files_post"><span class="badge badge_post">post</span></a> <a href="#files_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_files" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#files_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Uploads a file to be used within a Spark computation. The generated <code>fileId</code> can then be used together with the context function <code>getFileById(fileId)</code> (which returns the temporary local path) to actually use the file in the Spark context.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#files_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Returns an array of uploaded file objects</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="files_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/files</h4></div><div class="modal-body"><div class="alert alert-info"><p>Uploads a file to be used within a Spark computation. The generated <code>fileId</code> can then be used together with the context function <code>getFileById(fileId)</code> (which returns the temporary local path) to actually use the file in the Spark context.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#files_post_request" data-toggle="tab">Request</a></li><li><a href="#files_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="files_post_request"><h3>Body</h3><p><strong>Type: multipart/form-data</strong></p><strong>Form Parameters</strong><ul><li><strong>file</strong>: <em>required (file)</em><p>The file to be uploaded</p></li></ul></div><div class="tab-pane" id="files_post_response"><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><p>When the file was successfully uploaded</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "files": [
+    {
+      "fileId": "0asdf0g789sdf98ydfg99sfg898f7g989sa9"
+      "filePath": "/app/fileCache/0asdf0g789sdf98ydfg99sfg898f7g989sa9"
+      "fileSize": 1267
+      "originalFileName": "people.json",
+    }
+  ]
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "message": "An error occured during the upload!"
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="files_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/files</h4></div><div class="modal-body"><div class="alert alert-info"><p>Returns an array of uploaded file objects</p></div><ul class="nav nav-tabs"><li><a href="#files_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="files_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>When the files could successfully be retrieved, an array of file objects is returned. If none found, array will be empty.</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "files": [
+    {
+      "fileId": "0asdf0g789sdf98ydfg99sfg898f7g989sa9"
+      "filePath": "/app/fileCache/0asdf0g789sdf98ydfg99sfg898f7g989sa9"
+      "fileSize": 1267
+    }
+  ]
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_files__fileId_"><span class="parent">/files</span>/{fileId}</a> <span class="methods"><a href="#files__fileId__get"><span class="badge badge_get">get</span></a> <a href="#files__fileId__delete"><span class="badge badge_delete">delete</span></a></span></h4></div><div id="panel_files__fileId_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#files__fileId__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Returns a specific uploaded file</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#files__fileId__delete'" class="list-group-item"><span class="badge badge_delete">delete</span><div class="method_description"><p>Deletes a specific uploaded file</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="files__fileId__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/files</span>/{fileId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Returns a specific uploaded file</p></div><ul class="nav nav-tabs"><li class="active"><a href="#files__fileId__get_request" data-toggle="tab">Request</a></li><li><a href="#files__fileId__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="files__fileId__get_request"><h3>URI Parameters</h3><ul><li><strong>fileId</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="files__fileId__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>The specific file as binary stream</p><h3>Body</h3><p><strong>Type: application/octet-stream</strong></p><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Will be returned when the <code>fileId</code> wasn&#39;t found</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": false,
+  "message": "File :fileId was not found!"
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="files__fileId__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete</span> <span class="parent">/files</span>/{fileId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Deletes a specific uploaded file</p></div><ul class="nav nav-tabs"><li class="active"><a href="#files__fileId__delete_request" data-toggle="tab">Request</a></li><li><a href="#files__fileId__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="files__fileId__delete_request"><h3>URI Parameters</h3><ul><li><strong>fileId</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="files__fileId__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Will be sent if file was deleted successfully</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": true
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Will be returned when the <code>fileId</code> wasn&#39;t found</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": false,
+  "message": "File :fileId was not found!"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><p>Will be returned when the <code>fileId</code> contained forbidden characters (like <code>../</code> or <code>/</code>)</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": false,
+  "message": "Invalid file name!"
+}</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#contexts">/contexts</a></li><li><a href="#files">/files</a></li></ul></div></div></div></div></body></html>
