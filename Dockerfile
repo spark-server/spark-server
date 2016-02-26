@@ -23,6 +23,7 @@ RUN mkdir -p $APP_BASE_PATH && \
     mkdir -p $APP_BASE_PATH/fileCache && \
     mkdir -p $APP_BASE_PATH/tmpCache && \
     mkdir -p $APP_BASE_PATH/lib && \
+    mkdir -p $APP_BASE_PATH/logs && \
     mkdir -p $APP_BASE_PATH/routes && \
     mkdir -p $APP_BASE_PATH/build && \
     mkdir -p $APP_BASE_PATH/spark
