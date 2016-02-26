@@ -78,7 +78,6 @@ version: v1
             application/json:
               example: |
                 {
-                  "ok": false,
                   "message": "No context name specified!"
                 }
         200:
@@ -87,7 +86,6 @@ version: v1
               example: |
                 {
                   "context": "my",
-                  "ok": true,
                   "message": "Context my already exists!"
                 }
         201:
@@ -136,9 +134,68 @@ version: v1
             application/json:
               example: |
                 {
-                  "context": "my",
-                  "ok": true
+                  "context": "my"
                 }
+    /logs:
+      get:
+        description: Get the complete logs of the context since its start
+        responses:
+          200:
+            description: An array of session objects for the respective context
+            body:
+              application/json:
+                example: |
+                  {
+                    "context": "my",
+                    "logs": [
+                      "16/02/26 18:54:55 INFO SparkContext: Running Spark version 1.6.0",
+                      "16/02/26 18:54:56 INFO Utils: Successfully started service 'sparkDriver' on port 10091."
+                    ]
+                  }
+          404:
+            description:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Context :contextName was not found!"
+                  }
+          500:
+            description:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "No Context provided!"
+                  }
+      delete:
+        description: Truncates the context logs
+        responses:
+          200:
+            description: An array of session objects for the respective context
+            body:
+              application/json:
+                example: |
+                  {
+                    "context": "my",
+                    "logs": []
+                  }
+          404:
+            description:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Context :contextName was not found!"
+                  }
+          500:
+            description:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "No Context provided!"
+                  }
     /sessions:
       get:
         description: Lists all current available sessions for the respective context
@@ -173,7 +230,6 @@ version: v1
               application/json:
                 example: |
                   {
-                    "ok": false,
                     "message": "Context :contextName was not found!"
                   }
       post:
@@ -200,7 +256,6 @@ version: v1
               application/json:
                 example: |
                   {
-                    "ok": false,
                     "message": "Context :contextName was not found!"
                   }
       /{sessionId}:
@@ -213,18 +268,18 @@ version: v1
                 application/json:
                   example: |
                     {
-                       "id": "b177f3bd5e5426432e57aecaf7f418a8a0674137",
-                       "startedTimestamp": 1448626887670,
-                       "type": "spark",
-                       "status": "IDLE",
-                       "currentlyRunning": 0,
-                       "statements": [
-                         {
-                           "executionTimestamp": 1448626903332,
-                           "statementId": 0,
-                           "statement": "var df = sqlContext.read().json(getFileById('people.json'))"
-                         }
-                       ]
+                      "id": "b177f3bd5e5426432e57aecaf7f418a8a0674137",
+                      "startedTimestamp": 1448626887670,
+                      "type": "spark",
+                      "status": "IDLE",
+                      "currentlyRunning": 0,
+                      "statements": [
+                        {
+                          "executionTimestamp": 1448626903332,
+                          "statementId": 0,
+                          "statement": "var df = sqlContext.read().json(getFileById('people.json'))"
+                        }
+                      ]
                     }
         delete:
           description: Delete a session for the respective Spark context
@@ -244,7 +299,6 @@ version: v1
                 application/json:
                   example: |
                     {
-                      "ok": false,
                       "message": "SessionId :sessionId was not found for context :contextName!"
                     }
         /statements:
@@ -307,7 +361,6 @@ version: v1
                   application/json:
                     example: |
                       {
-                        "ok": false,
                         "message": "SessionId :sessionId was not found for context :contextName!"
                       }
 /files:
@@ -376,7 +429,6 @@ version: v1
             application/json:
               example: |
                 {
-                  "ok": false,
                   "message": "File :fileId was not found!"
                 }
     delete:
@@ -388,7 +440,7 @@ version: v1
             application/json:
               example: |
                 {
-                  "ok": true
+                  "file": "cars.csv"
                 }
         404:
           description: Will be returned when the `fileId` wasn't found
@@ -396,7 +448,6 @@ version: v1
             application/json:
               example: |
                 {
-                  "ok": false,
                   "message": "File :fileId was not found!"
                 }
         500:
@@ -405,6 +456,5 @@ version: v1
             application/json:
               example: |
                 {
-                  "ok": false,
                   "message": "Invalid file name!"
                 }

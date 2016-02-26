@@ -4,7 +4,8 @@ var bodyParser = require('body-parser');
 var winston = require('winston');
 
 cluster.setupMaster({
-    exec: './lib/sparkContextWorker'
+    exec: './lib/sparkContextWorker',
+    silent: false
 });
 
 // Instantiate Express.js
@@ -66,8 +67,11 @@ if (cluster.isMaster) {
     });
 
     // API docs
-    app.get(apiVersionPrefix + '/docs', function(req, res) {
+    app.get(apiVersionPrefix + '/docs/spark-server.html', function(req, res) {
         res.sendFile('docs/spark-server.html', {root: __dirname });
+    });
+    app.get(apiVersionPrefix + '/docs/spark-server.raml', function(req, res) {
+        res.sendFile('docs/spark-server.raml', {root: __dirname });
     });
 
     // Error handler
@@ -80,15 +84,7 @@ if (cluster.isMaster) {
         var host = server.address().address;
         var port = server.address().port;
 
-        logger.info('Example app listening at http://%s:%s', host, port);
-    });
-
-    cluster.on('online', function(worker) {
-        logger.info("The worker " + worker.id + " responded after it was forked");
-    });
-
-    cluster.on('exit', function(worker, code, signal) {
-        logger.info("The worker " + worker.id + " exited with " + (code || signal));
+        logger.info('Spark-Server is listening at http://%s:%s', host, port);
     });
 
 }

@@ -12,9 +12,9 @@ This project is to be considered as `alpha` code. Hopefully there will be some c
 
 **Roadmap:**  
 - [x] Optimize result parsing
+- [x] Improved logging
 - [ ] Better documentation at [spark-server.github.io](http://spark-server.github.io/)
 - [ ] Code cleanup & refactoring
-- [ ] Improved logging
 - [ ] Add tests
 - [ ] Add authentication
 
