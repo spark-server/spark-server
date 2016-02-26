@@ -96,13 +96,13 @@ module.exports = function(config, logger) {
             if (commonFunctions.fileExists(filePath)) {
                 commonFunctions.deleteFile(filePath, function(err) {
                     if (err) {
-                        res.status(500).json({ ok: false, message: err });
+                        res.status(500).json({ message: err });
                     } else {
-                        res.json({ ok: true });
+                        res.json({ file: fileName });
                     }
                 });
             } else {
-                res.status(404).json({ ok: false, message: "File " + fileName + " was not found!" });
+                res.status(404).json({ message: "File " + fileName + " was not found!" });
             }
         }
 

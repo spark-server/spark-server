@@ -1,5 +1,6 @@
 'use strict';
 var express = require('express');
+var Tail = require('tail').Tail;
 var router = express.Router();
 var commonFunctions = require('../lib/commonFunctions');
 
@@ -68,10 +69,10 @@ module.exports = function(config, logger, cluster) {
                 });
 
             } else {
-                res.json({ ok: false, message: "Context " + contextName + " was not found!" });
+                res.json({ message: "Context " + contextName + " was not found!" });
             }
         } else {
-            res.json({ ok: false, message: "No Context provided!" });
+            res.json({ message: "No Context provided!" });
         }
 
     });
@@ -135,11 +136,11 @@ module.exports = function(config, logger, cluster) {
                 contexts[contextName].contextWorker.on('exit', function(code, signal) {
 
                     if( signal ) {
-                        logger.warn("Worker with the ID " + contexts[contextName].contextWorker.id + " of context " + contextName + " was killed by signal: "+signal);
+                        logger.warn("Context worker with id " + contexts[contextName].contextWorker.id + " of context " + contextName + " was killed by signal: "+signal);
                     } else if( code !== 0 ) {
-                        logger.warn("Worker with the ID " + contexts[contextName].contextWorker.id + " of context " + contextName + " exited with error code: "+code);
+                        logger.warn("Context worker with id " + contexts[contextName].contextWorker.id + " of context " + contextName + " exited with error code: "+code);
                     } else {
-                        logger.warn("Worker with the ID " + contexts[contextName].contextWorker.id + " of context " + contextName + " was shut down");
+                        logger.warn("Context worker with id " + contexts[contextName].contextWorker.id + " of context " + contextName + " was shut down");
                     }
 
                     // Free the used ports
@@ -171,12 +172,35 @@ module.exports = function(config, logger, cluster) {
                 // Get unique listenerId. We need this for the parallel/async comminucation with our worker context process
                 var listenerId = commonFunctions.uniqueId(20);
 
+                // Request-unique messageListener
                 messageListeners[listenerId] = function(message) {
 
                     if (message.type === "create" && message.ok) {
 
                         // Clear timeout
                         clearTimeout(contextTimeout);
+
+                        logger.info("Context worker with id " + contexts[contextName].contextWorker.id + " has created context '" + contextName + "'");
+
+                        // Store logFile reference -> will be used by the
+                        contexts[contextName].logFile = new Tail(message.data.logPath, /[\r]{0,1}\n/, {}, true);
+
+                        // Create log array
+                        contexts[contextName].logs = [];
+
+                        // Event for new lines
+                        contexts[contextName].logFile.on("line", function(data) {
+                            // Push lines to log array
+                            contexts[contextName].logs.push(data.replace(/\t/g, ""));
+                        });
+
+                        // Event for watch errors
+                        contexts[contextName].logFile.on("error", function(error) {
+                            console.log('ERROR: ', error);
+                        });
+
+                        logger.info("Context worker with id " + contexts[contextName].contextWorker.id + " has logPath " + message.data.logPath);
+
 
                         // Only send response if timeout was not yet triggered
                         if (!timeoutTriggered) {
@@ -198,10 +222,10 @@ module.exports = function(config, logger, cluster) {
                 contexts[contextName].contextWorker.on('message', messageListeners[listenerId]);
 
             } else {
-                res.json({ context: contextName, ok: true, message: "Context " + contextName + " already exists!" });
+                res.json({ context: contextName, message: "Context " + contextName + " already exists!" });
             }
         } else {
-            res.json({ ok: false, message: "No context name specified!"});
+            res.status(500).json({ message: "No context name specified!"});
         }
 
     });
@@ -220,14 +244,54 @@ module.exports = function(config, logger, cluster) {
                 // Kill context worker process
                 contexts[contextName].contextWorker.kill();
 
+                // Unwatch logFile
+                contexts[contextName].logFile.unwatch();
+
                 // Send response
                 res.json({ context: contextName, ok: true});
 
             } else {
-                res.json({ ok: false, message: "Context " + contextName + " was not found!" });
+                res.status(404).json({ message: "Context " + contextName + " was not found!" });
             }
         } else {
-            res.json({ ok: false, message: "No Context provided!" });
+            res.status(500).json({ message: "No Context provided!" });
+        }
+
+    });
+
+    router.get('/:contextName/logs', function (req, res) {
+
+        var contextName = req.params.contextName;
+
+        if (contextName) {
+            if (contexts[contextName]) {
+                res.json({ context: contextName, logs: contexts[contextName].logs });
+            } else {
+                res.status(404).json({ message: "Context " + contextName + " was not found!" });
+            }
+        } else {
+            res.status(500).json({ message: "No Context provided!" });
+        }
+
+    });
+
+    router.delete('/:contextName/logs', function (req, res) {
+
+        var contextName = req.params.contextName;
+
+        if (contextName) {
+            if (contexts[contextName]) {
+
+                // Truncate logs array
+                contexts[contextName].logs.length = 0;
+
+                res.json({ context: contextName, logs: contexts[contextName].logs });
+
+            } else {
+                res.status(404).json({ message: "Context " + contextName + " was not found!" });
+            }
+        } else {
+            res.status(500).json({ message: "No Context provided!" });
         }
 
     });
@@ -252,10 +316,10 @@ module.exports = function(config, logger, cluster) {
                 });
 
             } else {
-                res.status(404).json({ ok: false, message: "Context " + contextName + " was not found!" });
+                res.status(404).json({ message: "Context " + contextName + " was not found!" });
             }
         } else {
-            res.status(404).json({ ok: false, message: "No Context provided!" });
+            res.status(500).json({ message: "No Context provided!" });
         }
 
     });
@@ -287,10 +351,10 @@ module.exports = function(config, logger, cluster) {
                 });
 
             } else {
-                res.status(404).json({ ok: false, message: "Context " + contextName + " was not found!" });
+                res.status(404).json({ message: "Context " + contextName + " was not found!" });
             }
         } else {
-            res.status(404).json({ ok: false, message: "No Context provided!" });
+            res.status(500).json({ message: "No Context provided!" });
         }
 
     });
@@ -309,13 +373,13 @@ module.exports = function(config, logger, cluster) {
                     });
 
                 } else {
-                    res.status(404).json({ ok: false, message: "SessionId " + sessionId + " was not found for context " + contextName + "!" });
+                    res.status(404).json({ message: "SessionId " + sessionId + " was not found for context " + contextName + "!" });
                 }
             } else {
-                res.status(500).json({ ok: false, message: "No SessionId provided!" });
+                res.status(500).json({ message: "No SessionId provided!" });
             }
         } else {
-            res.status(500).json({ ok: false, message: "No Context provided!" });
+            res.status(500).json({ message: "No Context provided!" });
         }
     });
 
@@ -353,14 +417,14 @@ module.exports = function(config, logger, cluster) {
                     contexts[contextName].contextWorker.on("message", messageListeners[listenerId]);
 
                 } else {
-                    res.status(404).json({ ok: false, message: "SessionId " + sessionId + " was not found for context " + contextName + "!" });
+                    res.status(404).json({ message: "SessionId " + sessionId + " was not found for context " + contextName + "!" });
                 }
             } else {
-                res.status(404).json({ ok: false, message: "No SessionId provided!" });
+                res.status(404).json({ message: "No SessionId provided!" });
             }
 
         } else {
-            res.status(404).json({ ok: false, message: "No Context provided!" });
+            res.status(404).json({ message: "No Context provided!" });
         }
 
     });
@@ -446,17 +510,17 @@ module.exports = function(config, logger, cluster) {
                         contexts[contextName].contextWorker.on("message", messageListeners[listenerId]);
 
                     } else {
-                        res.status(500).json({ ok: false, message: "No code to execute provided!" });
+                        res.status(500).json({ message: "No code to execute provided!" });
                     }
 
                 } else {
-                    res.status(404).json({ ok: false, message: "SessionId " + sessionId + " was not found for context " + contextName + "!" });
+                    res.status(404).json({ message: "SessionId " + sessionId + " was not found for context " + contextName + "!" });
                 }
             } else {
-                res.status(500).json({ ok: false, message: "No SessionId provided!" });
+                res.status(500).json({ message: "No SessionId provided!" });
             }
         } else {
-            res.status(500).json({ ok: false, message: "No Context provided!" });
+            res.status(500).json({ message: "No Context provided!" });
         }
 
     });

@@ -33,6 +33,7 @@
     "multer": "^1.1.0",
     "q": "^1.4.1",
     "request": "^2.67.0",
+    "tail": "^0.4.0",
     "winston": "^2.1.0"
   },
   "devDependencies": {
