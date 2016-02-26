@@ -8,15 +8,33 @@ To create a proof-of-concept of a usable and multi-user Spark REPL web service. 
 or [Apache Toree](http://toree.incubator.apache.org/), but each of them has it's own focus, and none of them is usable with JavaScript.
 
 **Current status:**  
-This project is to be considered as `alpha` code. Hopefully there will be some contributors which help to implement further feature. Any help is welcome!
+This project is to be considered as `alpha` code. Hopefully there will be some contributors which help to implement further features. Any help is welcome!
 
 **Roadmap:**  
 - [x] Optimize result parsing
-- [ ] Better documentation at [spark-server.github.io/](http://spark-server.github.io/)
+- [ ] Better documentation at [spark-server.github.io](http://spark-server.github.io/)
 - [ ] Code cleanup & refactoring
 - [ ] Improved logging
 - [ ] Add tests
 - [ ] Add authentication
+
+## Contents
+
+* [Installation](#installation)
+* [Configuration](#configuration)
+    - [Preconditions](#preconditions)
+    - [Application environment variables](#application-environment-variables)
+* [Running](#running)
+    - [Running locally](#running-locally)
+    - [Running via Docker](#running-via-docker)
+    - [Running on Mesos via Marathon](#running-on-mesos-via-marathon)
+* [API](#api)
+* [Capabilities](#capabilities)
+* [Examples](#examples)
+    - [Creating a context](#creating-a-context)
+    - [Creating a session](#creating-a-session)
+    - [Execution of statements](#execution-of-statements)
+* [Thanks](#thanks)
 
 ## Installation
 
@@ -53,7 +71,7 @@ Change to the folder to which you cloned `spark-server` to, and run `node spark-
 
     docker run -d -p 3000:3000 --name spark-server sparkserver/spark-server
     
-### Running on Marathon
+### Running on Mesos via Marathon
 
 It can be run through Mesos/Marathon like this:
 
