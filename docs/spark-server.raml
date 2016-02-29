@@ -138,7 +138,14 @@ version: v1
                 }
     /logs:
       get:
-        description: Get the complete logs of the context since its start
+        description: Get the logs of the context since its start, or the last `n` lines if the `tail` parameter is supplied.
+        queryParameters:
+          sortFields:
+            displayName: tail
+            type: integer
+            description: The number of log lines to be returned.
+            example: 100
+            required: false
         responses:
           200:
             description: An array of session objects for the respective context

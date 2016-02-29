@@ -262,10 +262,15 @@ module.exports = function(config, logger, cluster) {
     router.get('/:contextName/logs', function (req, res) {
 
         var contextName = req.params.contextName;
+        var tailStart = (req.query.tail && parseInt(req.query.tail) > 0 ? (req.query.tail <= contexts[contextName].logs.length ? contexts[contextName].logs.length-req.query.tail : 0) : null);
 
         if (contextName) {
             if (contexts[contextName]) {
-                res.json({ context: contextName, logs: contexts[contextName].logs });
+                if (tailStart) {
+                    res.json({ context: contextName, logs: contexts[contextName].logs.slice(tailStart, contexts[contextName].logs.length) });
+                } else {
+                    res.json({ context: contextName, logs: contexts[contextName].logs });
+                }
             } else {
                 res.status(404).json({ message: "Context " + contextName + " was not found!" });
             }
