@@ -370,6 +370,288 @@ version: v1
                       {
                         "message": "SessionId :sessionId was not found for context :contextName!"
                       }
+        /dataframes/{dataframeName}:
+          /data:
+            get:
+              description: Returns data of the DataFrame as a data object, sortable by `sortFields` and restrictable by `start` and `limit`. The result will contain a `data` property consisting of an array of row objects, as well as an `overallCount` property, which contains the DataFrame row count.
+              queryParameters:
+                sortFields:
+                 displayName: sortFields
+                 type: string
+                 description: A comma-separated string representation of DataFrame field names. Used to sort the data of the DataFrame (for pagination).
+                 example: id,name
+                 required: true
+                start:
+                 displayName: start
+                 type: integer
+                 description: The row number after which the row data from the DataFrame shall be returned.
+                 example: 50
+                 required: true
+                limit:
+                 displayName: limit
+                 type: integer
+                 description: The row count of rows which shall be returned after the `start` row number.
+                 example: 25
+                 required: true
+              responses:
+                200:
+                  description: The data object will contain a `data` property consisting of an array of row objects, as well as an `overallCount` property, which contains the DataFrame row count.
+                  body:
+                    application/json:
+                      example: |
+                        {
+                          "context": "my",
+                          "sessionId": "d018cc153a5a6b5960854739a59dc483120e8d46",
+                          "result": {
+                            "data": [
+                              {
+                                "id": 26,
+                                "first_name": "Alice",
+                                "last_name": "Ellis",
+                                "email": "aellisp@blog.com",
+                                "country": "Japan",
+                                "ip_address": "123.116.27.101",
+                                "amount": "850.91"
+                              },
+                              {
+                                "id": 27,
+                                "first_name": "Alan",
+                                "last_name": "Lopez",
+                                "email": "alopezq@cloudflare.com",
+                                "country": "Bolivia",
+                                "ip_address": "205.174.164.119",
+                                "amount": "337.88"
+                              },
+                              {
+                                "id": 28,
+                                "first_name": "Brian",
+                                "last_name": "Hamilton",
+                                "email": "bhamiltonr@nasa.gov",
+                                "country": "",
+                                "ip_address": "161.146.156.251",
+                                "amount": ""
+                              },
+                              {
+                                "id": 29,
+                                "first_name": "Patrick",
+                                "last_name": "Dixon",
+                                "email": "pdixons@ucoz.com",
+                                "country": "Armenia",
+                                "ip_address": "77.121.179.247",
+                                "amount": "943.21"
+                              },
+                              {
+                                "id": 30,
+                                "first_name": "Martin",
+                                "last_name": "Freeman",
+                                "email": "mfreemant@pen.io",
+                                "country": "",
+                                "ip_address": "4.240.14.164",
+                                "amount": ""
+                              }
+                            ],
+                            "overallCount": 1001
+                          },
+                          "metadata": {
+                            "runtime": 0
+                          }
+                        }
+                500:
+                  body:
+                    application/json:
+                      example: |
+                        {
+                          "ok": false,
+                          "message": "An error occured!"
+                        }
+          /stats:
+            get:
+              description: Returns a DataFrame statistics object.
+              queryParameters:
+                cutOffThreshold:
+                 displayName: cutOffThreshold
+                 type: integer
+                 description: The number of distinct elements that should be returned for each `string` field of the respective DataFrame. Default value is 25.
+                 example: 10
+                 required: false
+              responses:
+                200:
+                  description: A valid DataFrame statistics object. This consists of an array of values and their
+                    counts for each string field, and and array of statistical information for non-string fields.
+                  body:
+                    application/json:
+                      example: |
+                        {
+                          "context": "my",
+                          "sessionId": "6f4f5694488933a61a5bd414701f9b8ad231d109",
+                          "dataframe": "people",
+                          "result": {
+                            "fields": {
+                              "id": {
+                                "dataType": "integer",
+                                "values": [],
+                                "metadata": {
+                                  "overallCount": 60000,
+                                  "mean": 500.5,
+                                  "stddev": 288.6773959121997,
+                                  "min": 1,
+                                  "max": 1000
+                                }
+                              },
+                              "first_name": {
+                                "dataType": "string",
+                                "values": [{
+                                  "value": "Gloria",
+                                  "count": 720
+                                }, {
+                                  "value": "Annie",
+                                  "count": 720
+                                }, {
+                                  "value": "Other",
+                                  "count": 58560
+                                }],
+                                "metadata": {
+                                  "valueCount": 198,
+                                  "overallCount": 60000
+                                }
+                              },
+                              "last_name": {
+                                "dataType": "string",
+                                "values": [{
+                                  "value": "Reynolds",
+                                  "count": 660
+                                }, {
+                                  "value": "Washington",
+                                  "count": 600
+                                }, {
+                                  "value": "Other",
+                                  "count": 58740
+                                }],
+                                "metadata": {
+                                  "valueCount": 248,
+                                  "overallCount": 60000
+                                }
+                              },
+                              "email": {
+                                "dataType": "string",
+                                "values": [{
+                                  "value": "hmorrison2n@purevolume.com",
+                                  "count": 60
+                                }, {
+                                  "value": "challef@addtoany.com",
+                                  "count": 60
+                                }, {
+                                  "value": "Other",
+                                  "count": 59880
+                                }],
+                                "metadata": {
+                                  "valueCount": 1000,
+                                  "overallCount": 60000
+                                }
+                              },
+                              "country": {
+                                "dataType": "string",
+                                "values": [{
+                                  "value": "China",
+                                  "count": 9060
+                                }, {
+                                  "value": "Indonesia",
+                                  "count": 7200
+                                }, {
+                                  "value": "Other",
+                                  "count": 43740
+                                }],
+                                "metadata": {
+                                  "valueCount": 116,
+                                  "overallCount": 60000
+                                }
+                              },
+                              "ip_address": {
+                                "dataType": "string",
+                                "values": [{
+                                  "value": "143.164.246.153",
+                                  "count": 60
+                                }, {
+                                  "value": "167.95.133.96",
+                                  "count": 60
+                                }, {
+                                  "value": "Other",
+                                  "count": 59880
+                                }],
+                                "metadata": {
+                                  "valueCount": 1000,
+                                  "overallCount": 60000
+                                }
+                              },
+                              "amount": {
+                                "dataType": "string",
+                                "values": [{
+                                  "value": "",
+                                  "count": 3480
+                                }, {
+                                  "value": "9",
+                                  "count": 180
+                                }, {
+                                  "value": "Other",
+                                  "count": 56340
+                                }],
+                                "metadata": {
+                                  "valueCount": 938,
+                                  "overallCount": 60000
+                                }
+                              }
+                            }
+                          }
+                        }
+                500:
+                  body:
+                    application/json:
+                      example: |
+                        {
+                          "message": "An error occured!"
+                        }
+          /schema:
+              get:
+                description: Returns a DataFrame schema object.
+                responses:
+                  200:
+                    description: A valid DataFrame schema object, consisting of an array of field objects
+                    body:
+                      application/json:
+                        example: |
+                          {
+                            "context": "my",
+                            "sessionId": "d018cc153a5a6b5960854739a59dc483120e8d46",
+                            "dataframe": "people",
+                            "result": [
+                              {
+                                "name": "id",
+                                "type": "integer",
+                                "nullable": true,
+                                "metadata": {}
+                              },
+                              {
+                                "name": "first_name",
+                                "type": "string",
+                                "nullable": true,
+                                "metadata": {}
+                              },
+                              {
+                                "name": "last_name",
+                                "type": "string",
+                                "nullable": true,
+                                "metadata": {}
+                              }
+                            ]
+                          }
+                  500:
+                    description: An error message
+                    body:
+                      application/json:
+                        example: |
+                          {
+                            "message": "An error occured!"
+                          }
 /files:
   description: The `/files` endpoints allow uploading of local files to the Spark-Server. This can be useful if otherwise only the local filesystem can be used (instead of S3 etc.).
   post:

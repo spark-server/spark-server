@@ -335,6 +335,220 @@
   "error": "TypeError: df.schema(...).prettyJson(...).test is not a function",
   "metadata": {}
 }
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts__contextName__sessions__sessionId__dataframes__dataframeName__data"><span class="parent">/contexts/{contextName}/sessions/{sessionId}/dataframes/{dataframeName}</span>/data</a> <span class="methods"><a href="#contexts__contextName__sessions__sessionId__dataframes__dataframeName__data_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_contexts__contextName__sessions__sessionId__dataframes__dataframeName__data" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts__contextName__sessions__sessionId__dataframes__dataframeName__data_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Returns data of the DataFrame as a data object, sortable by <code>sortFields</code> and restrictable by <code>start</code> and <code>limit</code>. The result will contain a <code>data</code> property consisting of an array of row objects, as well as an <code>overallCount</code> property, which contains the DataFrame row count.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions__sessionId__dataframes__dataframeName__data_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/contexts/{contextName}/sessions/{sessionId}/dataframes/{dataframeName}</span>/data</h4></div><div class="modal-body"><div class="alert alert-info"><p>Returns data of the DataFrame as a data object, sortable by <code>sortFields</code> and restrictable by <code>start</code> and <code>limit</code>. The result will contain a <code>data</code> property consisting of an array of row objects, as well as an <code>overallCount</code> property, which contains the DataFrame row count.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions__sessionId__dataframes__dataframeName__data_get_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions__sessionId__dataframes__dataframeName__data_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions__sessionId__dataframes__dataframeName__data_get_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li><li><strong>sessionId</strong>: <em>required (string)</em></li><li><strong>dataframeName</strong>: <em>required (string)</em></li></ul><h3>Query Parameters</h3><ul><li><strong>sortFields</strong>: <em>required (string)</em><p>A comma-separated string representation of DataFrame field names. Used to sort the data of the DataFrame (for pagination).</p><p><strong>Example</strong>:</p><pre>id,name</pre></li><li><strong>start</strong>: <em>required (integer)</em><p>The row number after which the row data from the DataFrame shall be returned.</p><p><strong>Example</strong>:</p><pre><code>50</code></pre></li><li><strong>limit</strong>: <em>required (integer)</em><p>The row count of rows which shall be returned after the <code>start</code> row number.</p><p><strong>Example</strong>:</p><pre><code>25</code></pre></li></ul></div><div class="tab-pane" id="contexts__contextName__sessions__sessionId__dataframes__dataframeName__data_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>The data object will contain a <code>data</code> property consisting of an array of row objects, as well as an <code>overallCount</code> property, which contains the DataFrame row count.</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "sessionId": "d018cc153a5a6b5960854739a59dc483120e8d46",
+  "result": {
+    "data": [
+      {
+        "id": 26,
+        "first_name": "Alice",
+        "last_name": "Ellis",
+        "email": "aellisp@blog.com",
+        "country": "Japan",
+        "ip_address": "123.116.27.101",
+        "amount": "850.91"
+      },
+      {
+        "id": 27,
+        "first_name": "Alan",
+        "last_name": "Lopez",
+        "email": "alopezq@cloudflare.com",
+        "country": "Bolivia",
+        "ip_address": "205.174.164.119",
+        "amount": "337.88"
+      },
+      {
+        "id": 28,
+        "first_name": "Brian",
+        "last_name": "Hamilton",
+        "email": "bhamiltonr@nasa.gov",
+        "country": "",
+        "ip_address": "161.146.156.251",
+        "amount": ""
+      },
+      {
+        "id": 29,
+        "first_name": "Patrick",
+        "last_name": "Dixon",
+        "email": "pdixons@ucoz.com",
+        "country": "Armenia",
+        "ip_address": "77.121.179.247",
+        "amount": "943.21"
+      },
+      {
+        "id": 30,
+        "first_name": "Martin",
+        "last_name": "Freeman",
+        "email": "mfreemant@pen.io",
+        "country": "",
+        "ip_address": "4.240.14.164",
+        "amount": ""
+      }
+    ],
+    "overallCount": 1001
+  },
+  "metadata": {
+    "runtime": 0
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "ok": false,
+  "message": "An error occured!"
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts__contextName__sessions__sessionId__dataframes__dataframeName__stats"><span class="parent">/contexts/{contextName}/sessions/{sessionId}/dataframes/{dataframeName}</span>/stats</a> <span class="methods"><a href="#contexts__contextName__sessions__sessionId__dataframes__dataframeName__stats_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_contexts__contextName__sessions__sessionId__dataframes__dataframeName__stats" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts__contextName__sessions__sessionId__dataframes__dataframeName__stats_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Returns a DataFrame statistics object.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions__sessionId__dataframes__dataframeName__stats_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/contexts/{contextName}/sessions/{sessionId}/dataframes/{dataframeName}</span>/stats</h4></div><div class="modal-body"><div class="alert alert-info"><p>Returns a DataFrame statistics object.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions__sessionId__dataframes__dataframeName__stats_get_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions__sessionId__dataframes__dataframeName__stats_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions__sessionId__dataframes__dataframeName__stats_get_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li><li><strong>sessionId</strong>: <em>required (string)</em></li><li><strong>dataframeName</strong>: <em>required (string)</em></li></ul><h3>Query Parameters</h3><ul><li><strong>cutOffThreshold</strong>: <em>(integer)</em><p>The number of distinct elements that should be returned for each <code>string</code> field of the respective DataFrame. Default value is 25.</p><p><strong>Example</strong>:</p><pre><code>10</code></pre></li></ul></div><div class="tab-pane" id="contexts__contextName__sessions__sessionId__dataframes__dataframeName__stats_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>A valid DataFrame statistics object. This consists of an array of values and their counts for each string field, and and array of statistical information for non-string fields.</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "sessionId": "6f4f5694488933a61a5bd414701f9b8ad231d109",
+  "dataframe": "people",
+  "result": {
+    "fields": {
+      "id": {
+        "dataType": "integer",
+        "values": [],
+        "metadata": {
+          "overallCount": 60000,
+          "mean": 500.5,
+          "stddev": 288.6773959121997,
+          "min": 1,
+          "max": 1000
+        }
+      },
+      "first_name": {
+        "dataType": "string",
+        "values": [{
+          "value": "Gloria",
+          "count": 720
+        }, {
+          "value": "Annie",
+          "count": 720
+        }, {
+          "value": "Other",
+          "count": 58560
+        }],
+        "metadata": {
+          "valueCount": 198,
+          "overallCount": 60000
+        }
+      },
+      "last_name": {
+        "dataType": "string",
+        "values": [{
+          "value": "Reynolds",
+          "count": 660
+        }, {
+          "value": "Washington",
+          "count": 600
+        }, {
+          "value": "Other",
+          "count": 58740
+        }],
+        "metadata": {
+          "valueCount": 248,
+          "overallCount": 60000
+        }
+      },
+      "email": {
+        "dataType": "string",
+        "values": [{
+          "value": "hmorrison2n@purevolume.com",
+          "count": 60
+        }, {
+          "value": "challef@addtoany.com",
+          "count": 60
+        }, {
+          "value": "Other",
+          "count": 59880
+        }],
+        "metadata": {
+          "valueCount": 1000,
+          "overallCount": 60000
+        }
+      },
+      "country": {
+        "dataType": "string",
+        "values": [{
+          "value": "China",
+          "count": 9060
+        }, {
+          "value": "Indonesia",
+          "count": 7200
+        }, {
+          "value": "Other",
+          "count": 43740
+        }],
+        "metadata": {
+          "valueCount": 116,
+          "overallCount": 60000
+        }
+      },
+      "ip_address": {
+        "dataType": "string",
+        "values": [{
+          "value": "143.164.246.153",
+          "count": 60
+        }, {
+          "value": "167.95.133.96",
+          "count": 60
+        }, {
+          "value": "Other",
+          "count": 59880
+        }],
+        "metadata": {
+          "valueCount": 1000,
+          "overallCount": 60000
+        }
+      },
+      "amount": {
+        "dataType": "string",
+        "values": [{
+          "value": "",
+          "count": 3480
+        }, {
+          "value": "9",
+          "count": 180
+        }, {
+          "value": "Other",
+          "count": 56340
+        }],
+        "metadata": {
+          "valueCount": 938,
+          "overallCount": 60000
+        }
+      }
+    }
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "message": "An error occured!"
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contexts__contextName__sessions__sessionId__dataframes__dataframeName__schema"><span class="parent">/contexts/{contextName}/sessions/{sessionId}/dataframes/{dataframeName}</span>/schema</a> <span class="methods"><a href="#contexts__contextName__sessions__sessionId__dataframes__dataframeName__schema_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_contexts__contextName__sessions__sessionId__dataframes__dataframeName__schema" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contexts__contextName__sessions__sessionId__dataframes__dataframeName__schema_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Returns a DataFrame schema object.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contexts__contextName__sessions__sessionId__dataframes__dataframeName__schema_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/contexts/{contextName}/sessions/{sessionId}/dataframes/{dataframeName}</span>/schema</h4></div><div class="modal-body"><div class="alert alert-info"><p>Returns a DataFrame schema object.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contexts__contextName__sessions__sessionId__dataframes__dataframeName__schema_get_request" data-toggle="tab">Request</a></li><li><a href="#contexts__contextName__sessions__sessionId__dataframes__dataframeName__schema_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contexts__contextName__sessions__sessionId__dataframes__dataframeName__schema_get_request"><h3>URI Parameters</h3><ul><li><strong>contextName</strong>: <em>required (string)</em></li><li><strong>sessionId</strong>: <em>required (string)</em></li><li><strong>dataframeName</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="contexts__contextName__sessions__sessionId__dataframes__dataframeName__schema_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>A valid DataFrame schema object, consisting of an array of field objects</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "context": "my",
+  "sessionId": "d018cc153a5a6b5960854739a59dc483120e8d46",
+  "dataframe": "people",
+  "result": [
+    {
+      "name": "id",
+      "type": "integer",
+      "nullable": true,
+      "metadata": {}
+    },
+    {
+      "name": "first_name",
+      "type": "string",
+      "nullable": true,
+      "metadata": {}
+    },
+    {
+      "name": "last_name",
+      "type": "string",
+      "nullable": true,
+      "metadata": {}
+    }
+  ]
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><p>An error message</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "message": "An error occured!"
+}
 </code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="files" class="panel-title">/files</h3></div><div class="panel-body"><div class="top-resource-description"><p>The <code>/files</code> endpoints allow uploading of local files to the Spark-Server. This can be useful if otherwise only the local filesystem can be used (instead of S3 etc.).</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_files"><span class="parent"></span>/files</a> <span class="methods"><a href="#files_post"><span class="badge badge_post">post</span></a> <a href="#files_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_files" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#files_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Uploads a file to be used within a Spark computation. The generated <code>fileId</code> can then be used together with the context function <code>getFileById(fileId)</code> (which returns the temporary local path) to actually use the file in the Spark context.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#files_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Returns an array of uploaded file objects</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="files_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/files</h4></div><div class="modal-body"><div class="alert alert-info"><p>Uploads a file to be used within a Spark computation. The generated <code>fileId</code> can then be used together with the context function <code>getFileById(fileId)</code> (which returns the temporary local path) to actually use the file in the Spark context.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#files_post_request" data-toggle="tab">Request</a></li><li><a href="#files_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="files_post_request"><h3>Body</h3><p><strong>Type: multipart/form-data</strong></p><strong>Form Parameters</strong><ul><li><strong>file</strong>: <em>required (file)</em><p>The file to be uploaded</p></li></ul></div><div class="tab-pane" id="files_post_response"><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><p>When the file was successfully uploaded</p><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
   "files": [
     {

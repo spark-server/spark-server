@@ -25,6 +25,15 @@ module.exports = {
                 "spark.shuffle.sort.bypassMergeThreshold": "8"
             }
         },
+        dataframeOperations: {
+            stats: "getStatistics",
+            data: "getData",
+            schema: "getSchema"
+        },
+        statistics: {
+            showAllThreshold: 25,
+            cutOffThreshold: 25
+        },
         bindInterface: (process.env.BIND_INTERFACE ? process.env.BIND_INTERFACE : "en0")
     },
     vmContextConfiguration: {

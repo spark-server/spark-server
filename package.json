@@ -1,6 +1,6 @@
 {
   "name": "spark-server",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A REST interface for an Apache Spark REPL which can execute JavaScript",
   "main": "spark-server.js",
   "scripts": {

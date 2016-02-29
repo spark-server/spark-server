@@ -530,6 +530,115 @@ module.exports = function(config, logger, cluster) {
 
     });
 
+    router.get('/:contextName/sessions/:sessionId/dataframes/:dataframeName/:operation', function (req, res) {
+        var contextName = req.params.contextName;
+        var sessionId = req.params.sessionId;
+        var dataframeName = req.params.dataframeName;
+        var operation = req.params.operation ? req.params.operation.toLowerCase() : null;
+        var cutOffThreshold = req.query.cutOffThreshold ? req.query.cutOffThreshold : config.spark.statistics.cutOffThreshold;
+
+        if (contextName) {
+            if (sessionId) {
+                if (dataframeName) {
+                    if (operation && Object.getOwnPropertyNames(config.spark.dataframeOperations).indexOf(operation) > -1) {
+                        if (contexts[contextName] && contexts[contextName].sessions[sessionId]) {
+
+                            // Response sent?
+                            var responseSent = false;
+
+                            // Code to execute
+                            var code = "";
+
+                            // The operation "data" requires additional options, and "stats" can have a "cutOffThreshold" paramenter as well,
+                            // which needs to be handled. The other operations don't have any parameters
+                            if (operation === "data") {
+                                if (req.query.sortFields && req.query.start && req.query.limit) {
+                                    var sortFieldsArray = req.query.sortFields.indexOf(",") > -1 ? req.query.sortFields.split(",") : [req.query.sortFields.toString()];
+                                    code = config.spark.dataframeOperations[operation] + "(" + dataframeName + ", ['" + sortFieldsArray.join("','") + "']," + req.query.start + ", " + req.query.limit + ");";
+                                } else {
+                                    res.status(500).json({ ok: false, message: "Operation /data on a dataframe requires the mandatory parameters sortFields, start and limit!" });
+                                    responseSent = true;
+                                }
+                            } else if (operation === "stats") {
+                                code = config.spark.dataframeOperations[operation] + "(" + dataframeName + ", " + cutOffThreshold + ", true);";
+                            } else {
+                                code = config.spark.dataframeOperations[operation] + "(" + dataframeName + ");";
+                            }
+
+                            // Get unique listenerId. We need this for the parallel/async communication with our worker context process
+                            var listenerId = commonFunctions.uniqueId(20);
+
+                            // Create statement object (for session replay)
+                            var statement = {
+                                executionTimestamp: new Date().getTime(),
+                                statementId: contexts[contextName].sessions[sessionId].statements.length,
+                                statement: code
+                            };
+
+                            // The execution object which is passed to the context worker
+                            var executionObj = {
+                                "return": code
+                            };
+
+                            // Store statement
+                            contexts[contextName].sessions[sessionId].statements.push(statement);
+
+                            // Send message for context worker for code execution
+                            contexts[contextName].contextWorker.send({ type: "execute", data: executionObj, listenerId: listenerId });
+
+                            // Set session status to RUNNING
+                            contexts[contextName].sessions[sessionId].status = "RUNNING";
+
+                            // Create unique message listener for this request
+                            messageListeners[listenerId] = function(message) {
+                                if (message && message.type === "execute" && message.listenerId === listenerId && !responseSent) {
+                                    // Set session status to RUNNING
+                                    contexts[contextName].sessions[sessionId].status = "IDLE";
+                                    // Return response with result
+                                    if (message.ok) {
+                                        res.json({
+                                            context: contextName,
+                                            sessionId: sessionId,
+                                            dataframe: dataframeName,
+                                            result: message.result
+                                        });
+                                    } else {
+                                        res.status(500).json({
+                                            context: contextName,
+                                            sessionId: sessionId,
+                                            dataframe: dataframeName,
+                                            error: message.error.toString()
+                                        });
+                                    }
+
+                                    // Remove listener
+                                    contexts[contextName].contextWorker.removeListener("message", messageListeners[listenerId]);
+
+                                }
+
+                            };
+
+                            // Wait for result to be returned (via message type == execute)
+                            contexts[contextName].contextWorker.on("message", messageListeners[listenerId]);
+
+
+                        } else {
+                            res.status(404).json({ ok: false, message: "SessionId " + sessionId + " was not found for context " + contextName + "!" });
+                        }
+                    } else {
+                        res.status(500).json({ ok: false, message: "No operation provided, or operation does not match the allowed operations!" });
+                    }
+                } else {
+                    res.status(500).json({ ok: false, message: "No DataframeName provided!" });
+                }
+            } else {
+                res.status(500).json({ ok: false, message: "No SessionId provided!" });
+            }
+        } else {
+            res.status(500).json({ ok: false, message: "No Context provided!" });
+        }
+    });
+
     return router;
 
 };
