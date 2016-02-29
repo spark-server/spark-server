@@ -326,9 +326,9 @@ Now, we want to use the promisified [actions](https://spark.apache.org/docs/late
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
     "code": [
-        "var cars = await sqlContext.read().format('com.databricks.spark.csv').option('header', 'true').option('inferSchema', 'true').option('delimiter', ',').load(getFileById('cars.csv')).toJSON().collectPromised()"
+      "var people = sqlContext.read().format(\"com.databricks.spark.csv\").option(\"header\", \"true\").option(\"inferSchema\", \"true\").option(\"delimiter\", \",\").load(getFileById(\"people.csv\"))"
     ],
-    "return": "cars"
+    "return": "people.schema()"
 }' "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
 ```
 
@@ -365,14 +365,14 @@ which returns
 Also, we can try to mix JS with Spark code. Let's fetch the url stats of `www.google.com` from the Facebook Graph API asynchronously and calculate the comment-to-shares ratio with Spark SQL:
 
 ```bash
-{
+curl -X POST -H "Content-Type: application/json" -d '{
     "code": [
-        "var googleStats = sqlContext.read().json(await getRemoteJSON('http://graph.facebook.com/?id=http://www.google.com'))",
-        "googleStats.registerTempTable('gs')",
-        "var commentShareRatio = sqlContext.sql('select comments/shares*100 as commentShareRatio from gs')"
-    ],
+            "var googleStats = sqlContext.read().json(await getRemoteJSON(\"http://graph.facebook.com/?id=http://www.google.com\"))",
+            "googleStats.registerTempTable(\"gs\")",
+            "var commentShareRatio = sqlContext.sql(\"select comments/shares*100 as commentShareRatio from gs\")"
+        ],
     "return": "commentShareRatio"
-}
+}' "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
 ```
 
 returns
