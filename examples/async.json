@@ -1,0 +1,8 @@
+{
+  "code": [
+    "var googleStats = sqlContext.read().json(await getRemoteJSON('http://graph.facebook.com/?id=http://www.google.com'))",
+    "googleStats.registerTempTable('gs')",
+    "var commentShareRatio = sqlContext.sql('select comments/shares*100 as commentShareRatio from gs')"
+  ],
+  "return": "commentShareRatio"
+}

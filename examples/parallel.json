@@ -1,0 +1,6 @@
+{
+  "code": [
+    "var cars = await sqlContext.read().format('com.databricks.spark.csv').option('header', 'true').option('inferSchema', 'true').option('delimiter', ',').load(getFileById('cars.csv')).toJSON().collectPromised()"
+  ],
+  "return": "cars"
+}

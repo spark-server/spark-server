@@ -212,13 +212,21 @@ The returned `session.id` is the used to issue statements (next example).
 
 Now we'll try [execute some statements](http://spark-server.github.io/api/index.html#contexts__contextName__sessions__sessionId__statements_post). To load a provided sample csv file (under `fileCache/people.csv`) as a Spark `DataFrame` do the following:
 
+**examples/schema.json**
+```json
+{
+  "code": [
+    "var people = sqlContext.read().format('com.databricks.spark.csv').option('header', 'true').option('inferSchema', 'true').option('delimiter', ',').load(getFileById('people.csv'))"
+  ],
+  "return": "people.schema()"
+}
+```
+
+used in
+
+
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
-    "code": [
-      "var people = sqlContext.read().format('com.databricks.spark.csv').option('header', 'true').option('inferSchema', 'true').option('delimiter', ',').load(getFileById('people.csv'))"
-    ],
- 	"return": "people.schema()"
-}' "http://localhost:3000/v1/contexts/mycontext/sessions/a5f2498aef12d8562a84c447105ecb4f0ab27c14/statements"
+curl -X POST -H "Content-Type: application/json" -d @examples/schema.json "http://localhost:3000/v1/contexts/mycontext/sessions/a5f2498aef12d8562a84c447105ecb4f0ab27c14/statements"
 ```
 
 This will return the schema information of the newly created `people` DataFrame:
@@ -306,10 +314,18 @@ which will return (shortened)
 
 Let's try to count the females within the `people.csv` DataFrame:
 
+**examples/filter.json**
+```json
+{ 
+  "return": "people.filter('gender = \"Female\"').count()" 
+}
+```
+
+used in
+
+
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
- 	"return": "people.filter('gender = \"Female\"').count()"
-}' "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
+curl -X POST -H "Content-Type: application/json" -d @examples/filter.json "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
 ```
 
 which returns
@@ -324,13 +340,20 @@ which returns
 
 Now, we want to use the promisified [actions](https://spark.apache.org/docs/latest/programming-guide.html#actions) together with the async/await syntax to enable parallel execution (i.e. when the context is used by multiple sessions in parallel, so that the execution is non-blocking to others):
 
+**examples/parallel.json**
+```json
+{
+  "code": [
+    "var cars = await sqlContext.read().format('com.databricks.spark.csv').option('header', 'true').option('inferSchema', 'true').option('delimiter', ',').load(getFileById('cars.csv')).toJSON().collectPromised()"
+  ],
+  "return": "cars"
+}
+```
+
+used in
+
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
-    "code": [
-      "var people = sqlContext.read().format(\"com.databricks.spark.csv\").option(\"header\", \"true\").option(\"inferSchema\", \"true\").option(\"delimiter\", \",\").load(getFileById(\"people.csv\"))"
-    ],
-    "return": "people.schema()"
-}' "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
+curl -X POST -H "Content-Type: application/json" -d @examples/parallel.json "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
 ```
 
 which returns
@@ -365,15 +388,22 @@ which returns
 
 Also, we can try to mix JS with Spark code. Let's fetch the url stats of `www.google.com` from the Facebook Graph API asynchronously and calculate the comment-to-shares ratio with Spark SQL:
 
+**examples/async.json**
+```json
+{
+  "code": [
+    "var googleStats = sqlContext.read().json(await getRemoteJSON('http://graph.facebook.com/?id=http://www.google.com'))",
+    "googleStats.registerTempTable('gs')",
+    "var commentShareRatio = sqlContext.sql('select comments/shares*100 as commentShareRatio from gs')"
+  ],
+  "return": "commentShareRatio"
+}
+```
+
+used in
+
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
-    "code": [
-            "var googleStats = sqlContext.read().json(await getRemoteJSON(\"http://graph.facebook.com/?id=http://www.google.com\"))",
-            "googleStats.registerTempTable(\"gs\")",
-            "var commentShareRatio = sqlContext.sql(\"select comments/shares*100 as commentShareRatio from gs\")"
-        ],
-    "return": "commentShareRatio"
-}' "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
+curl -X POST -H "Content-Type: application/json" -d @examples/async.json "http://localhost:3000/v1/contexts/mycontext/sessions/0d3f34b951f9ef5129cb3f5870d9c70e3b9a2115/statements"
 ```
 
 returns

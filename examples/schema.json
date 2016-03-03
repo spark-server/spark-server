@@ -1,0 +1,6 @@
+{
+  "code": [
+    "var people = sqlContext.read().format('com.databricks.spark.csv').option('header', 'true').option('inferSchema', 'true').option('delimiter', ',').load(getFileById('people.csv'))"
+  ],
+  "return": "people.schema()"
+}
