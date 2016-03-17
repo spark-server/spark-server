@@ -100,7 +100,7 @@ If you also want to run Spark on the Mesos cluster, you have to specify the corr
 
 ## API
 
-You can find the generated RAML documentation of the REST API at [http://spark-server.github.io/api/index.html](http://spark-server.github.io/api/index.html), or on the `Spark-Server` instance under `/v1/docs/api`. The RAML file can be accessed via `/v1/docs/api/raml`.
+You can find the generated RAML documentation of the REST API at [http://spark-server.github.io/api/index.html](http://spark-server.github.io/api/index.html), or on the `spark-server` instance under `/v1/docs/api`. The RAML file can be accessed via `/v1/docs/api/raml`.
 
 ## Capabilities
 

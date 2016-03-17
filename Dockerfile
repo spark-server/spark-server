@@ -22,6 +22,8 @@ ENV NODE_VERSION v5.8.0
 RUN mkdir -p $APP_BASE_PATH && \
     mkdir -p $APP_BASE_PATH/fileCache && \
     mkdir -p $APP_BASE_PATH/tmpCache && \
+    mkdir -p $APP_BASE_PATH/config && \
+    mkdir -p $APP_BASE_PATH/docs && \
     mkdir -p $APP_BASE_PATH/lib && \
     mkdir -p $APP_BASE_PATH/logs && \
     mkdir -p $APP_BASE_PATH/routes && \
@@ -59,6 +61,8 @@ ENV MESOS_NATIVE_JAVA_LIBRARY /usr/local/lib/libmesos.so
 # Add Spark-Server files
 ADD spark-server.js $APP_BASE_PATH/spark-server.js
 ADD package.json $APP_BASE_PATH/package.json
+ADD ./config $APP_BASE_PATH/config
+ADD ./docs $APP_BASE_PATH/docs
 ADD ./lib $APP_BASE_PATH/lib
 ADD ./routes $APP_BASE_PATH/routes
 ADD ./build $APP_BASE_PATH/build
