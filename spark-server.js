@@ -67,10 +67,10 @@ if (cluster.isMaster) {
     });
 
     // API docs
-    app.get(apiVersionPrefix + '/docs/spark-server.html', function(req, res) {
+    app.get(apiVersionPrefix + '/docs/api', function(req, res) {
         res.sendFile('docs/spark-server.html', {root: __dirname });
     });
-    app.get(apiVersionPrefix + '/docs/spark-server.raml', function(req, res) {
+    app.get(apiVersionPrefix + '/docs/api/raml', function(req, res) {
         res.sendFile('docs/spark-server.raml', {root: __dirname });
     });
 
