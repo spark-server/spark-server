@@ -1,11 +1,11 @@
-FROM java:openjdk-8u66-jdk
+FROM java:openjdk-8-jdk
 
 # Add package sources and install
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF && \
     echo "deb http://repos.mesosphere.io/debian jessie main" | tee /etc/apt/sources.list.d/mesosphere.list && \
     echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list && \
     apt-get update && \
-    apt-get install --no-install-recommends -y --force-yes mesos=0.27.0-0.2.190.debian81 \
+    apt-get install --no-install-recommends -y --force-yes mesos=0.27.2-2.0.15.debian81 \
     wget \
     python \
     make \
@@ -16,7 +16,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF && \
 # Overall ENV vars
 ENV APP_BASE_PATH /app
 ENV SPARK_VERSION 1.6.0
-ENV NODE_VERSION v5.7.0
+ENV NODE_VERSION v5.8.0
 
 # Create folders for app
 RUN mkdir -p $APP_BASE_PATH && \
