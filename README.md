@@ -59,7 +59,7 @@ The following variables can be set:
 * `PORT_RANGE_START`: The start of the application's port range (e.g. 15000). Default is 10000 if not specified.
 * `PORT_RANGE_END`: The end of the application's port range (e.g. 15500). Default is 10100 if not specified.
 * `SPARK_PACKAGE_PATH`: Set the path where the Spark package (*.tgz) is located locally. If set, Spark-Server will serve this file and automatically set the `spark.executor.uri` property, so that it can use a Mesos cluster to run the executors on. When running via Docker, this is automatically enabled.
-* `APP_PORT`: The port on which the REST API server will listen.
+* `API_PORT`: The port on which the REST API server will listen.
 * `BIND_INTERFACE`: The network interface name which Apache Spark should use to determine the IP address to bind to. Default is `en0`. 
 
 ## Running
