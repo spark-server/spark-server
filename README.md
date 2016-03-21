@@ -10,6 +10,8 @@ or [Apache Toree](http://toree.incubator.apache.org/), but each of them has it's
 **Current status:**  
 This project is to be considered as `alpha` code. Hopefully there will be some contributors which help to implement further features. Any help is welcome!
 
+[![Build Status](https://travis-ci.org/spark-server/spark-server.svg?branch=master)](https://travis-ci.org/spark-server/spark-server)
+
 **Roadmap:**  
 - [x] Optimize result parsing
 - [x] Improved logging
