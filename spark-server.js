@@ -88,3 +88,5 @@ if (cluster.isMaster) {
     });
 
 }
+
+module.exports = app;
