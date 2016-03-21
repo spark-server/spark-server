@@ -1,7 +1,10 @@
 language: node_js
 
 node_js:
-  - "5"
+  - "5.8.x"
+
+before_install:
+  - "npm install -g node-gyp"
 
 branches:
   only:
