@@ -40,6 +40,7 @@
     "http-status": "^0.2.0",
     "mocha": "^2.4.5",
     "raml2html": "2.1.2",
+    "supertest": "^1.2.0",
     "supertest-as-promised": "^3.0.0"
   }
 }
