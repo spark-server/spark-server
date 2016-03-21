@@ -14,8 +14,8 @@ addons:
       - g++-4.8
 
 before_install:
-  - "wget http://d3kbcqa49mib13.cloudfront.net/spark-1.6.0-bin-hadoop2.6.tgz && tar xvf spark-1.6.0-bin-hadoop2.6.tgz -C /usr/local/"
-  - "export ASSEMBLY_JAR=/usr/local/spark-1.6.0-bin-hadoop2.6/lib/spark-assembly-1.6.0-hadoop2.6.0.jar"
+  - "wget http://d3kbcqa49mib13.cloudfront.net/spark-1.6.0-bin-hadoop2.6.tgz && tar xvf spark-1.6.0-bin-hadoop2.6.tgz -C /tmp"
+  - "export ASSEMBLY_JAR=/tmp/spark-1.6.0-bin-hadoop2.6/lib/spark-assembly-1.6.0-hadoop2.6.0.jar"
   - "npm install -g node-gyp"
 
 branches:
